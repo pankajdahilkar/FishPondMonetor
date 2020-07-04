@@ -11,7 +11,7 @@ stream = io.BytesIO()
 with picamera.PiCamera() as camera:
     camera.resolution = (320, 240)
     camera.capture(stream, format='jpeg')
-
+time.sleep(0.1)
 #Convert the picture into a numpy array
 buff = numpy.fromstring(stream.getvalue(), dtype=numpy.uint8)
 
@@ -27,7 +27,7 @@ gray = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
 #Look for faces in the image using the loaded cascade file
 faces = face_cascade.detectMultiScale(gray, 1.1, 5)
 
-print "Found "+str(len(faces))+" face(s)"
+print("Found "+str(len(faces))+" face(s)")
 
 #Draw a rectangle around every found face
 for (x,y,w,h) in faces:
