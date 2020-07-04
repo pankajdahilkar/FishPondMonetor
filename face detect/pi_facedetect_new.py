@@ -15,12 +15,11 @@ rawCapture = PiRGBArray(camera, size=(640, 480))
 time.sleep(0.1)
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
-	# grab the raw NumPy array representing the image, then initialize the timestamp
-	# and occupied/unoccupied text
-	image = frame.array
-	#Convert to grayscale
+        # grab the raw NumPy array representing the image, then initialize the timestamp
+        # and occupied/unoccupied text
+        image = frame.array
+        #Convert to grayscale
         gray = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
-
         #Look for faces in the image using the loaded cascade file
         faces = faceCascade.detectMultiScale(
                 gray,
@@ -34,10 +33,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         for (x,y,w,h) in faces:
             cv2.rectangle(image,(x,y),(x+w,y+h),(255,255,0),2)
                 # show the frame
-	cv2.imshow("Frame", image)
-	key = cv2.waitKey(1) & 0xFF
-	# clear the stream in preparation for the next frame
-	rawCapture.truncate(0)
-	# if the `q` key was pressed, break from the loop
-	if key == ord("q"):
-		break
+        cv2.imshow("Frame", image)
+        key = cv2.waitKey(1) & 0xFF
+        # clear the stream in preparation for the next frame
+        rawCapture.truncate(0)
+        # if the `q` key was pressed, break from the loop
+        if key == ord("q"):
+                break
