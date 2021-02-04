@@ -1,4 +1,4 @@
-
+# USAGE
 # import the necessary packages
 from scipy.spatial import distance as dist
 from imutils import perspective
@@ -7,21 +7,33 @@ import numpy as np
 import argparse
 import imutils
 import cv2
-
+import time
 def midpoint(ptA, ptB):
 	return ((ptA[0] + ptB[0]) * 0.5, (ptA[1] + ptB[1]) * 0.5)
 
 
 def detect_level():
-        width = 2.5
+        width = 2.0
         # load the image, convert it to grayscale, and blur it slightly
         image = cv2.imread("image1.jpeg")
         out=cv2.transpose(image)
         image=cv2.flip(out,flipCode=1)
-
+        lower=[150, 130, 150]
+        upper = [190, 160, 240]
+        # loop over the boundaries
+        # create NumPy arrays from the boundaries
+        lower = np.array(lower, dtype = "uint8")
+        upper = np.array(upper, dtype = "uint8")
+        # find the colors within the specified boundaries and apply
+        # the mask
+        mask = cv2.inRange(image, lower, upper)
+        output = cv2.bitwise_and(image, image, mask = mask)
+        # show the images
+        #cv2.imshow("images",output)
+        #cv2.waitKey(0)
+        image = output
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         gray = cv2.GaussianBlur(gray, (7, 7), 0)
-
         # perform edge detection, then perform a dilation + erosion to
         # close gaps in between object edges
         edged = cv2.Canny(gray, 50, 100)
@@ -45,7 +57,6 @@ def detect_level():
                 # if the contour is not sufficiently large, ignore it
                 if cv2.contourArea(c) < 100:
                         continue
-
                 # compute the rotated bounding box of the contour
                 box = cv2.minAreaRect(c)
                 box = cv2.cv.BoxPoints(box) if imutils.is_cv2() else cv2.boxPoints(box)
@@ -108,10 +119,17 @@ def detect_level():
 
                         # show the output image
                         print(D)
+                        time.sleep(0.5)
                         cv2.imshow("Image", orig)
+                        time.sleep(0.5)
                         #break
                         #cv2.waitKey(0)
                         return D
 
-level = detect_level()
-print("level = ",level)
+
+# load the image
+#image = cv2.imread("image1.jpeg")
+# define the list of boundaries
+detect_level()
+
+

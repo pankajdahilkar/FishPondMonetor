@@ -20,7 +20,7 @@ def read_iot_cmd():
 
 
 def send_email():
-    toaddr = 'kishorlanjewar66@gmail.com'
+    toaddr = 'smitagawade1234@gmail.com'
     me = 'smitagawade1234@gmail.com'
     Subject='security alert'
     subject='Security allert!!'
@@ -49,23 +49,38 @@ def send_email():
 
 #print("Sending Email")
 #send_email()
-LED = 40 # pin40
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BOARD) # We are accessing GPIOs according to their physical location
-GPIO.setup(LED, GPIO.OUT) # We have set our LED pin mode to output
-GPIO.output(LED, GPIO.LOW) # When it will start then LED will be OFF
- 
-while(True):
-    cmd_c = read_iot_cmd()
-    if(cmd_c == 1):
-        GPIO.output(LED, GPIO.HIGH) # led on
-        print("Motor ON")
-        resp =req.get("https://world4.tech/fsecure/upload.php?val=Motor%20ON")
-        print(resp.text)
-    elif(cmd_c == 0):
-        GPIO.output(LED, GPIO.LOW)
-        print("Motor OFF")
-        resp =req.get("https://world4.tech/fsecure/upload.php?val=Motor%20OFF")
-        print(resp.text)
-    sleep(2)
-    
+def Run_motor_control():
+    MAIN_MOTOR = 40 # pin40
+    DRAIN_MOTOR = 38
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BOARD) # We are accessing GPIOs according to their physical location
+    GPIO.setup(MAIN_MOTOR, GPIO.OUT) # We have set our MAIN_MOTOR pin mode to output
+    GPIO.output(MAIN_MOTOR, GPIO.LOW) # When it will start then MAIN_MOTOR will be OFF \
+    GPIO.setup(DRAIN_MOTOR, GPIO.OUT) # We have set our MAIN_MOTOR pin mode to output
+    GPIO.output(DRAIN_MOTOR, GPIO.LOW) # When it will start then MAIN_MOTOR will be OFF 
+    while(True):
+        cmd_c = read_iot_cmd()
+        if(cmd_c == 1):
+            #GPIO.output(MAIN_MOTOR, GPIO.HIGH) # led on
+            print("MAin Motor ON")
+            resp =req.get("https://world4.tech/fsecure/pumpdata.php?val=MAIN%20Motor%20ON")
+            print(resp.text)
+        elif(cmd_c == 0):
+            #GPIO.output(MAIN_MOTOR, GPIO.LOW)
+            print("Main Motor OFF")
+            resp =req.get("https://world4.tech/fsecure/pumpdata.php?val=MAIN%20Motor%20OFF")
+            print(resp.text)
+        elif(cmd_c == 3):
+            #GPIO.output(DRAIN_MOTOR, GPIO.HIGH)
+            print("DRAIN Motor ON")
+            resp =req.get("https://world4.tech/fsecure/pumpdata.php?val=DRAIN%20Motor%20ON")
+            print(resp.text)
+        elif(cmd_c == 4):
+            #GPIO.output(DRAIN_MOTOR, GPIO.LOW)
+            print("DRAIN Motor OFF")
+            resp =req.get("https://world4.tech/fsecure/pumpdata.php?val=DRAIN%20Motor%20OFF")
+            print(resp.text)
+        sleep(2)
+        
+if __name__ == "__main__":
+    Run_motor_control()
